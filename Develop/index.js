@@ -4,7 +4,7 @@
 const inquirer = require("inquirer");
 const fs = require("fs");
 const path = require("path");
-const generateReadMe = require("./generateMarkdown");
+const generateMarkdown = require("./generateMarkdown");
 
 // TODO: Create an array of questions for user input
 const questions = [
@@ -43,7 +43,7 @@ const questions = [
     // Project Dependencies
     {
         type: "input",
-        name: "require",
+        name: "requirements",
         message: "List any project dependencies here.",
     },
     // Usage
@@ -63,7 +63,7 @@ const questions = [
     // Testing
     {
         type: "input",
-        name: "testing",
+        name: "test",
         message: "Provide a walkthrough of required tests if applicable.",
     },
 
@@ -80,21 +80,23 @@ const questions = [
     },
 ];
 
-// TODO: Create a function to write README file
-function writeToFile(fileName, data) {
-    return fs.writeFileSync(path.join(process.cwd(), fileName), data);
-}
+
 
 // TODO: Create a function to initialize app
 function init() {
-    inquirer.prompt(questions).then((responses) => {
-        console.log("Is this working?");
+    inquirer.prompt(questions)
+    .then((responses) => {
+        console.log("function is working");
 
+        fs.writeFile('README.md', generateMarkdown(responses) , (err) =>
+        err ? console.error(err) : console.log('File Created Successfully')
+        );
+
+        /*
+        fs.appendFile('README.md', generateMarkdown(responses), (err) => err ? console.error(err) : console.log('Answers Appended to File')
+        );
+        */
     });
-
-
-    // This is where you should take information from the questions array and add it to the empty README file
-
 }
 
 // Function call to initialize app, will get called when you do node index.js in command line
